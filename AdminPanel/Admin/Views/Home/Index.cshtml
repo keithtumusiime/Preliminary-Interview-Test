@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-3">
+    <h4 class="display-6 text-info">Welcome Back, @User.Identity.Name</h4>
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 id="totalRequests">Loading...</h1>
+                <p>Total Api Calls</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 id="successfulRequests">Loading...</h1>
+                <p>Successful Api Calls</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 id="failedRequests">Loading...</h1>
+                <p>Failed Api Calls</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 id="averageResponseTime">Loading...</h1>
+                <p>Avg Response Time</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Make an AJAX call to the API
+            $.ajax({
+                url: '/api/Admin/metrics',  // URL to your API
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    // Populate the HTML elements with the data
+                    $('#totalRequests').text(data.totalRequests);
+                    $('#successfulRequests').text(data.successfulRequests);
+                    $('#failedRequests').text(data.failedRequests);
+                    $('#averageResponseTime').text(data.averageResponseTime + ' ms');
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors
+                    console.log('Error fetching metrics:', error);
+                }
+            });
+        });
+    </script>
+}
